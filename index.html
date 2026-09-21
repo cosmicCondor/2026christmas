@@ -3,21 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#071424" />
-  <title>Una sorpresa para ti ❤️</title>
+  <title>Una sorpresa para ti 🩵</title>
+  
+  <!-- Tipografías elegantes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Confetti Canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --night: #071424;
-      --night-blue: #0e2a49;
-      --red: #ca2442;
-      --red-light: #f35368;
-      --green: #0b7648;
-      --gold: #ffd257;
-      --white: #f8fbff;
-      --cream: #fff7df;
-      --muted: #c8d8eb;
-      --danger: #ff9cad;
+      --bg-dark: #070a12;
+      --card-bg: rgba(13, 19, 33, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --gold: #d4af37;
+      --gold-light: #f5e6a3;
+      --gold-gradient: linear-gradient(135deg, #f5e6a3 0%, #d4af37 50%, #aa8210 100%);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-red: #e63946;
+      --ticket-bg: #f8f6f0;
+      --ticket-text: #1a1a1a;
+      --ticket-border: #dcd8cd;
     }
 
     * {
@@ -27,784 +38,1473 @@
     }
 
     html {
-      min-height: 100%;
-      background: var(--night);
+      scroll-behavior: smooth;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
     }
 
     body {
       min-height: 100vh;
-      min-height: 100dvh;
       overflow-x: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      color: var(--white);
-      background:
-        radial-gradient(circle at 50% -20%, rgba(54, 120, 180, 0.54), transparent 45%),
-        radial-gradient(circle at 5% 70%, rgba(11, 118, 72, 0.2), transparent 30%),
-        radial-gradient(circle at 96% 14%, rgba(202, 36, 66, 0.16), transparent 30%),
-        linear-gradient(160deg, #06111f 0%, var(--night-blue) 50%, #061526 100%);
+      background-color: var(--bg-dark);
+      position: relative;
     }
 
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .snow-layer,
-    .stars {
+    /* Fondo con estrellas y partículas */
+    .space-bg {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      overflow: hidden;
-    }
-
-    .snow-layer {
       z-index: 0;
+      background: 
+        radial-gradient(circle at 50% 10%, rgba(30, 41, 69, 0.45) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+        linear-gradient(180deg, #070a12 0%, #0a0f1d 50%, #06080e 100%);
     }
 
-    .stars {
-      z-index: 1;
-      opacity: 0.6;
-      background-image:
-        radial-gradient(circle, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.5px),
-        radial-gradient(circle, rgba(255, 210, 87, 0.6) 0 1px, transparent 1.5px);
-      background-size: 94px 94px, 133px 133px;
-      background-position: 13px 17px, 49px 62px;
-    }
-
-    .snowflake {
+    .stars-layer {
       position: fixed;
-      top: -2rem;
-      color: #fff;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.75);
+      inset: 0;
       pointer-events: none;
       z-index: 1;
-      animation-name: snowfall;
-      animation-timing-function: linear;
-      animation-fill-mode: forwards;
+      opacity: 0.7;
+      background-image: 
+        radial-gradient(circle, #ffffff 0.8px, transparent 1px),
+        radial-gradient(circle, rgba(212, 175, 55, 0.9) 0.8px, transparent 1.2px);
+      background-size: 80px 80px, 130px 130px;
+      background-position: 0 0, 40px 60px;
     }
 
-    @keyframes snowfall {
-      to {
-        transform: translateY(115vh) rotate(360deg);
-      }
+    /* Guirnalda de luces festivas */
+    .lights-garland {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 45px;
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding: 0 10px;
+      pointer-events: none;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
     }
 
-    .app {
+    .light-bulb {
+      width: 10px;
+      height: 14px;
+      border-radius: 50% 50% 45% 45%;
+      margin-top: 1px;
       position: relative;
-      z-index: 2;
+      animation: glow 1.8s ease-in-out infinite alternate;
+    }
+
+    .light-bulb::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 3px;
+      width: 4px;
+      height: 4px;
+      background: #444;
+      border-radius: 1px;
+    }
+
+    .bulb-gold { background: #ffd055; box-shadow: 0 0 12px 2px #ffd055; }
+    .bulb-cyan { background: #38ef7d; box-shadow: 0 0 12px 2px #38ef7d; animation-delay: 0.3s; }
+    .bulb-red { background: #ff4757; box-shadow: 0 0 12px 2px #ff4757; animation-delay: 0.6s; }
+    .bulb-blue { background: #1e90ff; box-shadow: 0 0 12px 2px #1e90ff; animation-delay: 0.9s; }
+    .bulb-purple { background: #e056fd; box-shadow: 0 0 12px 2px #e056fd; animation-delay: 1.2s; }
+
+    @keyframes glow {
+      0% { opacity: 0.45; filter: brightness(0.7); }
+      100% { opacity: 1; filter: brightness(1.3); }
+    }
+
+    /* Contenedor principal */
+    .main-wrapper {
+      position: relative;
+      z-index: 10;
       width: 100%;
       min-height: 100vh;
-      min-height: 100dvh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.25rem;
+      padding: 0;
     }
 
+    /* Pantallas */
     .screen {
       width: 100%;
-      max-width: 640px;
-      text-align: center;
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #access-screen,
+    #adventure-screen {
+      max-width: 600px;
+      padding: 80px 20px 40px;
+      margin: 0 auto;
     }
 
     .screen.is-hidden {
       display: none;
-    }
-
-    .screen.fade-out {
       opacity: 0;
-      transform: translateY(-8px) scale(0.98);
+      transform: translateY(20px) scale(0.98);
     }
 
-    .card {
+    .screen.active {
+      display: block;
+      animation: fadeInScreen 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInScreen {
+      from { opacity: 0; transform: translateY(25px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       position: relative;
       overflow: hidden;
-      width: 100%;
-      padding: clamp(1.55rem, 5vw, 3rem);
-      border: 2px solid transparent;
-      border-radius: clamp(24px, 5vw, 34px);
-      background:
-        linear-gradient(140deg, rgba(17, 46, 76, 0.94), rgba(6, 22, 39, 0.96)) padding-box,
-        linear-gradient(120deg, var(--red), var(--gold) 48%, var(--green)) border-box;
-      box-shadow:
-        0 30px 75px rgba(0, 0, 0, 0.48),
-        0 0 30px rgba(255, 210, 87, 0.17),
-        inset 0 1px 0 rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.5;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 14% 5%, rgba(255, 255, 255, 0.18), transparent 24%),
-        linear-gradient(115deg, transparent 0 43%, rgba(255, 255, 255, 0.06) 50%, transparent 57%);
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .garland {
-      width: min(100%, 470px);
-      height: 42px;
-      margin: 0 auto 0.7rem;
-      padding: 13px 12px 0;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      border-top: 3px solid rgba(21, 83, 49, 0.95);
-      border-radius: 50%;
-    }
-
-    .bulb {
-      width: 12px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--bulb);
-      box-shadow: 0 0 8px var(--bulb), 0 0 17px var(--bulb);
-      animation: twinkle 1.8s ease-in-out infinite alternate;
-    }
-
-    .bulb:nth-child(2n) {
-      animation-delay: 0.35s;
-    }
-
-    .bulb:nth-child(3n) {
-      animation-delay: 0.7s;
-    }
-
-    @keyframes twinkle {
-      from {
-        opacity: 0.58;
-        transform: translateY(0) scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(2px) scale(1.08);
-      }
-    }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 0.45rem 0.85rem;
-      border: 1px solid rgba(255, 210, 87, 0.48);
-      border-radius: 999px;
-      background: rgba(255, 210, 87, 0.1);
-      color: #ffe79a;
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.11em;
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
     }
 
-    h1,
-    h2 {
-      margin-top: 1.1rem;
-      line-height: 1.08;
-      letter-spacing: -0.035em;
+    .title-cinzel {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.15;
+      color: #ffffff;
+      margin-bottom: 1rem;
     }
 
-    h1 {
-      font-size: clamp(2.1rem, 7vw, 4.1rem);
-      background: linear-gradient(100deg, #fff6ce, var(--gold) 44%, #fff6ce 72%, #efffdf);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.42));
+    .title-romantic {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      font-weight: 600;
+      line-height: 1.35;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
     }
 
-    h2 {
-      font-size: clamp(2rem, 6vw, 3.45rem);
-      color: var(--cream);
-      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.42);
+    .text-serif {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
     }
 
-    .lead {
-      max-width: 530px;
-      margin: 1.05rem auto 0;
-      color: var(--muted);
-      font-size: clamp(1rem, 2.6vw, 1.23rem);
+    .subtitle-text {
+      color: var(--text-muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.08rem);
       line-height: 1.6;
+      max-width: 460px;
+      margin: 0 auto 2rem;
+      font-weight: 400;
     }
 
-    .date-form {
-      max-width: 430px;
-      margin: 1.7rem auto 0;
+    .form-group {
       text-align: left;
+      margin-bottom: 1.5rem;
     }
 
-    label {
+    .form-label {
       display: block;
-      margin-bottom: 0.55rem;
-      color: var(--white);
-      font-size: 1rem;
-      font-weight: 800;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
     }
 
-    .date-input {
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-dark {
       width: 100%;
-      min-height: 58px;
-      padding: 0.8rem 0.95rem;
-      border: 1px solid rgba(236, 245, 255, 0.38);
+      background: rgba(5, 8, 16, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
       border-radius: 16px;
-      outline: none;
-      background: rgba(2, 13, 26, 0.42);
-      color: var(--white);
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      color: #ffffff;
       color-scheme: dark;
-      font-size: 1.08rem;
-      font-weight: 650;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      outline: none;
+      transition: all 0.25s ease;
+      font-family: inherit;
     }
 
-    .date-input:focus {
+    .input-dark:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 4px rgba(255, 210, 87, 0.18);
+      background: rgba(7, 11, 22, 0.9);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
     }
 
-    .date-input.input-error {
-      border-color: var(--danger);
-      box-shadow: 0 0 0 4px rgba(255, 111, 139, 0.16);
-      animation: shake 0.32s ease-in-out;
+    .input-dark.has-error {
+      border-color: var(--accent-red);
+      animation: shake 0.35s ease;
+      box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.15);
     }
 
     @keyframes shake {
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-      25% {
-        transform: translateX(-7px);
-      }
-      75% {
-        transform: translateX(7px);
-      }
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
     }
 
-    .message {
-      min-height: 1.55rem;
-      margin-top: 0.65rem;
-      color: var(--danger);
-      font-size: 0.94rem;
-      font-weight: 700;
-      line-height: 1.4;
+    .feedback-msg {
+      min-height: 22px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-top: 8px;
+      color: var(--accent-red);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .message.success {
-      color: #a6f6c7;
+    .feedback-msg.is-success {
+      color: #38ef7d;
     }
 
-    .button {
+    .btn-gold {
       width: 100%;
-      min-height: 58px;
-      margin-top: 1.1rem;
-      border: 0;
+      padding: 16px 28px;
+      border: none;
       border-radius: 16px;
-      color: #17100e;
-      background: linear-gradient(
-        105deg,
-        var(--red),
-        var(--red-light) 31%,
-        var(--gold) 77%,
-        #ffe08c
-      );
-      box-shadow: 0 13px 28px rgba(202, 36, 66, 0.3), 0 7px 0 rgba(89, 14, 28, 0.22);
-      font-size: 1.08rem;
-      font-weight: 900;
+      background: var(--gold-gradient);
+      color: #121008;
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      touch-action: manipulation;
-      transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.35);
+      transition: all 0.25s ease;
     }
 
-    .button:hover {
-      filter: saturate(1.1) brightness(1.04);
+    .btn-gold:hover {
       transform: translateY(-2px);
-      box-shadow: 0 17px 34px rgba(202, 36, 66, 0.38), 0 7px 0 rgba(89, 14, 28, 0.22);
+      box-shadow: 0 14px 30px -5px rgba(212, 175, 55, 0.5);
+      filter: brightness(1.05);
     }
 
-    .button:active {
-      transform: translateY(3px);
-      box-shadow: 0 7px 16px rgba(202, 36, 66, 0.28), 0 3px 0 rgba(89, 14, 28, 0.22);
+    .hint-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: 1.2rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
     }
 
-    .hint {
-      margin-top: 1rem;
-      color: rgba(224, 236, 255, 0.72);
-      font-size: 0.85rem;
-      line-height: 1.45;
+    .hint-btn:hover {
+      color: var(--gold-light);
     }
 
-    .adventure-icon {
-      width: 108px;
-      height: 108px;
-      margin: 0 auto;
+    .hint-box {
+      font-size: 0.82rem;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .gift-avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.02) 70%);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid rgba(255, 210, 87, 0.6);
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255, 210, 87, 0.25),
-        rgba(202, 36, 66, 0.12) 60%,
-        transparent 70%
-      );
-      box-shadow: 0 0 35px rgba(255, 210, 87, 0.25);
-      font-size: 3.7rem;
-      animation: float 3.5s ease-in-out infinite;
+      color: var(--gold);
+      animation: pulseGlow 2.5s infinite alternate;
     }
 
-    @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-9px);
-      }
+    @keyframes pulseGlow {
+      from { transform: scale(1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+      to { transform: scale(1.06); box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); }
     }
 
-    .subtle-line {
-      width: 94px;
-      height: 3px;
-      margin: 1.3rem auto 0;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--red), var(--gold), var(--green));
+    /* ======================================================
+       PANTALLA 3: LANDING COMPLETA CON ESPACIADO PERFECTO
+       ====================================================== */
+    #reveal-screen {
+      width: 100%;
+      padding: 0;
+      margin: 0;
     }
 
-    .ticket {
-      max-width: 500px;
-      margin: 1.2rem auto 0;
+    .reveal-container {
+      display: flex;
+      flex-direction: column;
+      gap: 70px;
+      width: 100%;
+      padding-bottom: 90px;
+    }
+
+    /* Hero Banner a Pantalla Completa */
+    .hero-banner {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 24px 60px;
+      text-align: center;
       overflow: hidden;
-      text-align: left;
-      border: 1px solid rgba(255, 224, 140, 0.52);
-      border-radius: 18px;
-      background: rgba(6, 20, 35, 0.54);
     }
 
-    .ticket-top {
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?q=80&w=2400&auto=format&fit=crop') center center / cover no-repeat;
+      filter: brightness(0.68) saturate(1.15);
+      transition: transform 12s ease;
+    }
+
+    .hero-banner:hover .hero-bg-img {
+      transform: scale(1.04);
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(7, 10, 18, 0.25) 0%, rgba(7, 10, 18, 0.8) 75%, var(--bg-dark) 100%),
+        linear-gradient(180deg, rgba(7, 10, 18, 0.4) 0%, transparent 40%, rgba(7, 10, 18, 0.95) 90%, var(--bg-dark) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-date-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      border-bottom: 1.5px solid var(--gold);
+      padding-bottom: 4px;
+      margin-top: 18px;
+    }
+
+    /* Ticker / Cinta continua */
+    .marquee-container {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 16px 0;
+      display: flex;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 30px;
+      white-space: nowrap;
+      animation: marquee 25s linear infinite;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .marquee-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Contenedor centralizado para secciones */
+    .content-container {
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 65px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--gold-light);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    /* Tarjeta de Embarque / Billete */
+    .ticket-section-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .boarding-pass-card {
+      background: var(--ticket-bg);
+      color: var(--ticket-text);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      border: 1px solid var(--ticket-border);
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .boarding-pass-card {
+        flex-direction: row;
+      }
+    }
+
+    .ticket-main {
+      flex: 1;
+      padding: 34px 38px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 2px dashed #cfc9bb;
+    }
+
+    @media (min-width: 768px) {
+      .ticket-main {
+        border-bottom: none;
+        border-right: 2px dashed #cfc9bb;
+      }
+    }
+
+    .ticket-header {
       display: flex;
       justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 1.1rem 0.9rem;
-      background: linear-gradient(105deg, rgba(202, 36, 66, 0.74), rgba(11, 118, 72, 0.72));
-      font-size: 0.76rem;
-      font-weight: 900;
-      letter-spacing: 0.1em;
+      align-items: center;
+    }
+
+    .ticket-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-    }
-
-    .ticket-top strong {
-      font-size: 0.82rem;
-      letter-spacing: 0;
-      text-transform: none;
-      white-space: nowrap;
-    }
-
-    .ticket-body {
+      color: #555;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
-      padding: 1.1rem;
+      gap: 6px;
     }
 
-    .ticket-city {
-      color: var(--cream);
-      font-size: clamp(1.5rem, 5.5vw, 2.25rem);
-      font-weight: 950;
-      letter-spacing: -0.04em;
+    .ticket-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .ticket-dest-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #777;
+    }
+
+    .ticket-dest-city {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #111;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+
+    .ticket-dest-sub {
+      font-size: 0.88rem;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    .ticket-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      padding-top: 18px;
+      border-top: 1px solid #e2ddd3;
+    }
+
+    .ticket-item span {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #777;
+    }
+
+    .ticket-item strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .ticket-barcode-area {
+      padding-top: 14px;
+      border-top: 1px dashed #ded8cb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .barcode-lines {
+      height: 34px;
+      width: 160px;
+      background: repeating-linear-gradient(
+        90deg,
+        #111,
+        #111 2px,
+        transparent 2px,
+        transparent 4px,
+        #111 4px,
+        #111 7px,
+        transparent 7px,
+        transparent 9px
+      );
+    }
+
+    /* Lateral derecho (Stub del billete) */
+    .ticket-stub {
+      width: 100%;
+      background: #f3efe5;
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      gap: 28px;
+      border-radius: 0 0 24px 24px;
+    }
+
+    @media (min-width: 768px) {
+      .ticket-stub {
+        width: 240px;
+        border-radius: 0 24px 24px 0;
+      }
+    }
+
+    .stub-top-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .plane-icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      color: var(--accent-red);
+      margin-bottom: 12px;
+    }
+
+    .approved-stamp {
+      border: 2px solid #b83b3b;
+      color: #b83b3b;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transform: rotate(-5deg);
+      font-family: 'Space Mono', monospace;
+      box-shadow: 0 2px 6px rgba(184, 59, 59, 0.1);
+    }
+
+    .ticket-notch {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: var(--bg-dark);
+      border-radius: 50%;
+      z-index: 5;
+    }
+
+    @media (min-width: 768px) {
+      .notch-top {
+        top: -12px;
+        right: 228px;
+      }
+      .notch-bottom {
+        bottom: -12px;
+        right: 228px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .notch-top {
+        top: 61%;
+        left: -12px;
+      }
+      .notch-bottom {
+        top: 61%;
+        right: -12px;
+      }
+    }
+
+    /* Cuenta Atrás */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .countdown-box {
+      background: rgba(13, 19, 33, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .countdown-num {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--gold-light);
       line-height: 1;
     }
 
-    .ticket-country {
-      margin-top: 0.35rem;
-      color: var(--muted);
-      font-size: 0.92rem;
+    .countdown-lbl {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
     }
 
-    .ticket-plane {
-      font-size: 2.1rem;
-      animation: plane 2.6s ease-in-out infinite;
+    /* Recuerdo Polaroid */
+    .photo-polaroid-card {
+      max-width: 420px;
+      margin: 0 auto;
+      background: rgba(18, 24, 38, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 18px 18px 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
     }
 
-    @keyframes plane {
-      0%,
-      100% {
-        transform: translateX(0) rotate(-8deg);
-      }
-      50% {
-        transform: translateX(5px) translateY(-4px) rotate(-3deg);
-      }
+    .polaroid-img-wrapper {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 240px;
+      background: #111;
     }
 
-    .ticket-footer {
+    .polaroid-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .photo-polaroid-card:hover .polaroid-img-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .polaroid-caption {
+      margin-top: 16px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: #e5e7eb;
+    }
+
+    .btn-upload-photo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 8px 16px;
+      border-radius: 100px;
+      margin-top: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-upload-photo:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    /* Itinerario */
+    .adventure-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-      padding: 0.9rem 1.1rem 1.1rem;
-      border-top: 1px dashed rgba(255, 255, 255, 0.25);
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
 
-    .ticket-footer div {
-      color: var(--muted);
-      font-size: 0.77rem;
-      line-height: 1.35;
-    }
-
-    .ticket-footer strong {
-      display: block;
-      margin-top: 0.14rem;
-      color: var(--white);
-      font-size: 0.96rem;
-    }
-
-    .love-message {
-      max-width: 520px;
-      margin: 1.25rem auto 0;
-      color: var(--white);
-      font-size: clamp(1rem, 2.55vw, 1.18rem);
-      line-height: 1.62;
-    }
-
-    .love-message strong {
-      color: #ffe5a0;
-    }
-
-    .heart {
-      display: inline-block;
-      margin-left: 0.15rem;
-      animation: heartbeat 1.35s ease-in-out infinite;
-    }
-
-    @keyframes heartbeat {
-      0%,
-      100% {
-        transform: scale(1);
-      }
-      14% {
-        transform: scale(1.23);
-      }
-      28% {
-        transform: scale(1);
-      }
-      42% {
-        transform: scale(1.15);
-      }
-      58% {
-        transform: scale(1);
+    @media (min-width: 640px) {
+      .adventure-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    .final-note {
-      margin-top: 1rem;
-      color: rgba(237, 244, 255, 0.72);
+    .plan-card {
+      background: rgba(13, 19, 33, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(212, 175, 55, 0.3);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    .plan-img {
+      height: 160px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .plan-img-1 { background-image: url('https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?q=80&w=600&auto=format&fit=crop'); }
+    .plan-img-2 { background-image: url('https://images.unsplash.com/photo-1583295125721-766a0088cb3b?q=80&w=600&auto=format&fit=crop'); }
+    .plan-img-3 { background-image: url('https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=600&auto=format&fit=crop'); }
+    .plan-img-4 { background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop'); }
+
+    .plan-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-body h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .plan-body p {
       font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
-    @media (min-width: 700px) {
-      .app {
-        padding: 2.5rem;
-      }
-
-      .card {
-        padding: 3.1rem 3.4rem;
-      }
-
-      .button:not(.date-form .button) {
-        width: auto;
-        min-width: 250px;
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
+    /* Carta */
+    .letter-container {
+      max-width: 650px;
+      margin: 0 auto;
+      background: radial-gradient(circle at 50% 0%, rgba(30, 42, 69, 0.4) 0%, rgba(13, 19, 33, 0.85) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 28px;
+      padding: clamp(2.2rem, 5vw, 3.5rem);
+      text-align: center;
+      position: relative;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+    .letter-for {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-body {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.15rem, 3vw, 1.35rem);
+      line-height: 1.7;
+      color: #f3f4f6;
+    }
+
+    .letter-body strong {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .letter-sign {
+      margin-top: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Reproductor de Música */
+    .music-player-card {
+      max-width: 480px;
+      margin: 0 auto;
+      background: rgba(13, 19, 33, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 30px 25px;
+      text-align: center;
+    }
+
+    .music-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .song-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .song-artist {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .song-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .btn-audio-toggle {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-audio-toggle:hover {
+      background: var(--gold-gradient);
+      color: #111;
+      border-color: transparent;
+    }
+
+    .footer-final-text {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+      margin-top: 20px;
     }
   </style>
 </head>
-
 <body>
-  <div id="snow-layer" class="snow-layer" aria-hidden="true"></div>
-  <div class="stars" aria-hidden="true"></div>
 
-  <main class="app">
-    <section id="access-screen" class="screen" aria-labelledby="access-title">
-      <div class="card">
-        <div class="garland" aria-hidden="true">
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
-          <span class="bulb" style="--bulb:#38d883"></span>
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
-          <span class="bulb" style="--bulb:#38d883"></span>
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
+  <!-- Luces decorativas superiores -->
+  <div class="lights-garland" aria-hidden="true">
+    <div class="light-bulb bulb-gold"></div>
+    <div class="light-bulb bulb-cyan"></div>
+    <div class="light-bulb bulb-red"></div>
+    <div class="light-bulb bulb-blue"></div>
+    <div class="light-bulb bulb-purple"></div>
+    <div class="light-bulb bulb-gold"></div>
+    <div class="light-bulb bulb-red"></div>
+    <div class="light-bulb bulb-cyan"></div>
+    <div class="light-bulb bulb-gold"></div>
+    <div class="light-bulb bulb-blue"></div>
+    <div class="light-bulb bulb-red"></div>
+    <div class="light-bulb bulb-purple"></div>
+  </div>
+
+  <!-- Capas de fondo astronómico -->
+  <div class="space-bg"></div>
+  <div class="stars-layer"></div>
+
+  <main class="main-wrapper">
+
+    <!-- ==========================================
+         PANTALLA 1: PANTALLA INICIAL PERSONALIZADA
+         ========================================== -->
+    <section id="access-screen" class="screen active">
+      <div class="glass-card">
+        <div class="badge-pill">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          Para la nenonshia más especial
         </div>
 
-        <span class="eyebrow">✦ Una pista antes del regalo ✦</span>
-
-        <h1 id="access-title">Nuestra fecha especial</h1>
-
-        <p class="lead">
-          Antes de descubrir tu sorpresa, dime… ¿cuándo fue nuestra primera cita?
+        <h1 class="title-romantic">
+          Gracias por ser como eres conmigo y por hacerme sentir cada día más especial <span class="text-serif" style="color: var(--accent-red);">❤️</span>
+        </h1>
+        
+        <p class="subtitle-text">
+          Antes de descubrir tu sorpresa, dime… ¿recuerdas qué día empezó todo aquella tarde de septiembre?
         </p>
 
-        <form id="date-form" class="date-form" novalidate>
-          <label for="our-date">Nuestra fecha</label>
+        <form id="date-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="our-date">Nuestra fecha especial</label>
+            <div class="input-wrapper">
+              <input 
+                type="date" 
+                id="our-date" 
+                class="input-dark" 
+                value=""
+                required
+              />
+            </div>
+            <div id="date-feedback" class="feedback-msg"></div>
+          </div>
 
-          <input
-            class="date-input"
-            type="date"
-            id="our-date"
-            name="our-date"
-            required
-            aria-describedby="date-message"
-          />
-
-          <p id="date-message" class="message" role="alert" aria-live="polite"></p>
-
-          <button id="continue-button" class="button" type="button">
-            Continuar ✨
+          <button id="btn-validate-date" type="button" class="btn-gold">
+            <span>Continuar</span>
+            <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
           </button>
         </form>
 
-        <p class="hint">
-          Un pequeño recuerdo abre una aventura muy grande.
+        <div>
+          <button id="btn-hint" class="hint-btn" type="button">
+            <i data-lucide="help-circle" style="width: 14px; height: 14px;"></i>
+            ¿Una pista?
+          </button>
+          <div id="hint-content" class="hint-box">
+            Piensa en el 15 de septiembre de 2023 🤫
+          </div>
+        </div>
+
+        <p style="font-size: 0.78rem; color: #6b7280; margin-top: 24px;">
+          Un pequeño recuerdo abre una aventura muy grande ✨
         </p>
       </div>
     </section>
 
-    <section
-      id="adventure-screen"
-      class="screen is-hidden"
-      aria-labelledby="adventure-title"
-    >
-      <div class="card">
-        <div class="adventure-icon" aria-hidden="true">🧳</div>
+    <!-- ==========================================
+         PANTALLA 2: TRANSICIÓN / PREPARACIÓN
+         ========================================== -->
+    <section id="adventure-screen" class="screen is-hidden">
+      <div class="glass-card">
+        <div class="gift-avatar">
+          <i data-lucide="gift" style="width: 38px; height: 38px;"></i>
+        </div>
 
-        <span class="eyebrow">Diciembre nos espera</span>
+        <div class="badge-pill">
+          Diciembre nos espera
+        </div>
 
-        <h2 id="adventure-title">
-          ¿Estás preparada para la aventura?
-        </h2>
+        <h2 class="title-cinzel" style="font-size: 2.2rem;">¿Estás preparada para la aventura?</h2>
 
-        <p class="lead">
-          Hay una ciudad iluminada, planes de invierno y una persona que tiene
-          muchísimas ganas de vivirlo contigo.
+        <p class="subtitle-text">
+          Hay una ciudad iluminada, planes de invierno y una persona que tiene muchísimas ganas de vivirlo contigo.
         </p>
 
-        <div class="subtle-line" aria-hidden="true"></div>
-
-        <button id="reveal-button" class="button" type="button">
-          Descubrir mi sorpresa 🎁
+        <button id="btn-reveal" type="button" class="btn-gold">
+          <span>Descubrir mi sorpresa</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
         </button>
       </div>
     </section>
 
-    <section
-      id="reveal-screen"
-      class="screen is-hidden"
-      aria-labelledby="reveal-title"
-    >
-      <div class="card">
-        <div class="garland" aria-hidden="true">
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
-          <span class="bulb" style="--bulb:#38d883"></span>
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
-          <span class="bulb" style="--bulb:#38d883"></span>
-          <span class="bulb" style="--bulb:#ff4d65"></span>
-          <span class="bulb" style="--bulb:#ffd257"></span>
+    <!-- ==========================================
+         PANTALLA 3: EXPERIENCIA Y SORPRESA (ÁMSTERDAM)
+         ========================================== -->
+    <section id="reveal-screen" class="screen is-hidden">
+      <div class="reveal-container">
+
+        <!-- 01. Hero Banner Full Width -->
+        <header class="hero-banner">
+          <div class="hero-bg-img"></div>
+          <div class="hero-gradient"></div>
+          <div class="hero-content">
+            <div class="badge-pill" style="margin-bottom: 1.2rem;">
+              Una sorpresa para ti · 15/09/2023
+            </div>
+            <div style="font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 12px;">
+              El regalo de Navidad
+            </div>
+            <h1 class="title-cinzel" style="font-size: clamp(2.8rem, 7vw, 4.8rem); text-shadow: 0 4px 25px rgba(0,0,0,0.9);">
+              ¡Nos vamos a Ámsterdam!
+            </h1>
+            <p style="color: #e5e7eb; font-size: clamp(1.1rem, 2.5vw, 1.35rem); max-width: 650px; margin: 0 auto; line-height: 1.6; font-family: 'Playfair Display', serif; font-style: italic; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+              Una escapada para perdernos entre canales, luces de Navidad y momentos que solo serán nuestros.
+            </p>
+            <div class="hero-date-badge">
+              6 – 9 de Diciembre · 2026
+            </div>
+          </div>
+        </header>
+
+        <!-- Cinta Continua (Ticker) -->
+        <div class="marquee-container" aria-hidden="true">
+          <div class="marquee-track">
+            <span>Ámsterdam ✦</span>
+            <span>6–9 de diciembre ✦</span>
+            <span>Canales iluminados ✦</span>
+            <span>Chocolate caliente ✦</span>
+            <span>Navidad juntos ✦</span>
+            <span>Luces de invierno ✦</span>
+            <span>Ámsterdam ✦</span>
+            <span>6–9 de diciembre ✦</span>
+            <span>Canales iluminados ✦</span>
+            <span>Chocolate caliente ✦</span>
+            <span>Navidad juntos ✦</span>
+            <span>Luces de invierno ✦</span>
+          </div>
         </div>
 
-        <span class="eyebrow">El regalo de Navidad</span>
+        <!-- Contenedor centralizado sin solapamientos -->
+        <div class="content-container">
 
-        <h1 id="reveal-title">¡Nos vamos a Ámsterdam!</h1>
+          <!-- 02. Tarjeta de Embarque / Billete -->
+          <div class="ticket-section-wrapper">
+            <div class="section-subtitle">01 · El Billete</div>
+            <div class="boarding-pass-card">
+              <div class="ticket-notch notch-top"></div>
+              <div class="ticket-notch notch-bottom"></div>
 
-        <p class="lead">
-          Una escapada para perdernos entre canales, luces de Navidad y momentos
-          que solo serán nuestros.
-        </p>
+              <div class="ticket-main">
+                <div class="ticket-header">
+                  <div class="ticket-badge">
+                    <i data-lucide="plane" style="width: 14px; height: 14px;"></i>
+                    Tarjeta de Embarque
+                  </div>
+                  <div class="ticket-tagline">Navidad Juntos</div>
+                </div>
 
-        <article class="ticket" aria-label="Detalles del viaje a Ámsterdam">
-          <div class="ticket-top">
-            <span>Tarjeta de embarque</span>
-            <strong>Navidad juntos</strong>
-          </div>
+                <div>
+                  <div class="ticket-dest-label">Destino</div>
+                  <div class="ticket-dest-city">Ámsterdam</div>
+                  <div class="ticket-dest-sub">Países Bajos · Luces, canales y magia</div>
+                </div>
 
-          <div class="ticket-body">
-            <div>
-              <div class="ticket-city">Ámsterdam</div>
-              <div class="ticket-country">
-                Países Bajos · Luces, canales y magia
+                <div class="ticket-grid">
+                  <div class="ticket-item">
+                    <span>Vuelo</span>
+                    <strong>AMS-00126</strong>
+                  </div>
+                  <div class="ticket-item">
+                    <span>Fechas</span>
+                    <strong>6–9 DIC. 2026</strong>
+                  </div>
+                  <div class="ticket-item">
+                    <span>Asientos</span>
+                    <strong>17A · 17B</strong>
+                  </div>
+                </div>
+
+                <div class="ticket-barcode-area">
+                  <div class="barcode-lines"></div>
+                  <div style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #666;">AMS·2026·LOVE·TRIP</div>
+                </div>
+              </div>
+
+              <div class="ticket-stub">
+                <div class="stub-top-content">
+                  <div class="plane-icon-circle">
+                    <i data-lucide="send" style="width: 22px; height: 22px;"></i>
+                  </div>
+                  <div style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: #777; font-weight: 700;">Navidad 2026</div>
+                  <div style="font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: #111; margin-top: 6px;">Una aventura contigo</div>
+                </div>
+
+                <div class="approved-stamp">
+                  APPROVED FOR LOVE
+                </div>
               </div>
             </div>
-
-            <div class="ticket-plane" aria-hidden="true">✈️</div>
           </div>
 
-          <div class="ticket-footer">
-            <div>
-              FECHAS
-              <strong>6 – 9 de diciembre</strong>
-            </div>
+          <!-- 03. Cuenta Atrás -->
+          <div>
+            <div class="section-subtitle">02 · La Cuenta Atrás</div>
+            <h3 class="section-title">Cada segundo nos acerca</h3>
 
-            <div>
-              PLAN
-              <strong>Una aventura contigo</strong>
+            <div class="countdown-grid">
+              <div class="countdown-box">
+                <div id="cd-days" class="countdown-num">92</div>
+                <div class="countdown-lbl">Días</div>
+              </div>
+              <div class="countdown-box">
+                <div id="cd-hours" class="countdown-num">12</div>
+                <div class="countdown-lbl">Horas</div>
+              </div>
+              <div class="countdown-box">
+                <div id="cd-minutes" class="countdown-num">03</div>
+                <div class="countdown-lbl">Min</div>
+              </div>
+              <div class="countdown-box">
+                <div id="cd-seconds" class="countdown-num">16</div>
+                <div class="countdown-lbl">Seg</div>
+              </div>
             </div>
           </div>
-        </article>
 
-        <p class="love-message">
-          Te quiero <strong>muchísimo</strong>. Quiero recorrer contigo las
-          calles iluminadas, brindar con algo caliente, reírnos sin prisa y
-          guardar recuerdos preciosos de esta aventura.
-          <span class="heart">❤️</span>
-        </p>
+          <!-- 04. Nuestro Recuerdo / Foto -->
+          <div>
+            <div class="section-subtitle">03 · Nuestro Recuerdo</div>
+            <div class="photo-polaroid-card">
+              <div class="polaroid-img-wrapper">
+                <img id="polaroid-preview" src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017?q=80&w=800&auto=format&fit=crop" alt="Ámsterdam Recuerdo" />
+              </div>
+              <div class="polaroid-caption">
+                Nosotros, muy pronto en Ámsterdam ❤️
+              </div>
+              <label class="btn-upload-photo" for="photo-input">
+                <i data-lucide="camera" style="width: 14px; height: 14px;"></i>
+                <span>Poner una foto nuestra</span>
+              </label>
+              <input type="file" id="photo-input" accept="image/*" style="display: none;" />
+            </div>
+          </div>
 
-        <p class="final-note">
-          Prepárate: diciembre va a ser inolvidable.
-        </p>
+          <!-- 05. La Aventura / Itinerario -->
+          <div>
+            <div class="section-subtitle">04 · La Aventura</div>
+            <h3 class="section-title">Planes mágicos esperándonos</h3>
+
+            <div class="adventure-grid">
+              <div class="plan-card">
+                <div class="plan-img plan-img-1"></div>
+                <div class="plan-body">
+                  <h4>Festival de Luces en barco</h4>
+                  <p>Navegar de noche por los canales entre instalaciones de luz, abrazados bajo una manta.</p>
+                </div>
+              </div>
+
+              <div class="plan-card">
+                <div class="plan-img plan-img-2"></div>
+                <div class="plan-body">
+                  <h4>Perdernos por el Jordaan</h4>
+                  <p>Calles con nieve, escaparates dorados y ninguna prisa por llegar a ningún sitio.</p>
+                </div>
+              </div>
+
+              <div class="plan-card">
+                <div class="plan-img plan-img-3"></div>
+                <div class="plan-body">
+                  <h4>Chocolate caliente y algo dulce</h4>
+                  <p>Una parada obligatoria para templar con un café calentito y compartir el postre.</p>
+                </div>
+              </div>
+
+              <div class="plan-card">
+                <div class="plan-img plan-img-4"></div>
+                <div class="plan-body">
+                  <h4>Noche mágica bajo las luces</h4>
+                  <p>Un último paseo por el puente iluminado para guardar el recuerdo perfecto.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 06. La Carta -->
+          <div>
+            <div class="section-subtitle">05 · La Carta</div>
+            <div class="letter-container">
+              <div class="letter-for">Para ti</div>
+              <p class="letter-body">
+                Te quiero <strong>muchísimo</strong>. Quiero recorrer contigo las calles iluminadas, brindar con algo caliente, reírnos sin prisa y guardar recuerdos preciosos de esta aventura.
+              </p>
+              <div class="letter-sign">
+                Con todo mi amor <span style="color: var(--accent-red); font-style: normal;">❤️</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 07. Nuestra Canción -->
+          <div>
+            <div class="section-subtitle">06 · Nuestra Canción</div>
+            <div class="music-player-card">
+              <div class="music-icon">
+                <i data-lucide="music" style="width: 26px; height: 26px;"></i>
+              </div>
+              <div class="song-title">Solo tienes que avisar</div>
+              <div class="song-artist">DANI FERNÁNDEZ · NUESTRA CANCIÓN</div>
+              <p class="song-desc">
+                Empieza a sonar sola al descubrir la sorpresa. Sube el volumen y piensa en todo lo que nos queda por vivir.
+              </p>
+              <button id="btn-music" type="button" class="btn-audio-toggle">
+                <i data-lucide="play" id="music-icon-state" style="width: 16px; height: 16px;"></i>
+                <span id="music-text-state">Pausar la canción</span>
+              </button>
+              <div style="font-size: 0.75rem; color: #6b7280; margin-top: 15px;">
+                Sonando en bucle, solo para nosotros ✨
+              </div>
+            </div>
+          </div>
+
+          <!-- Cierre final -->
+          <div class="footer-final-text">
+            Prepárate: diciembre va a ser inolvidable ✈️
+          </div>
+
+        </div>
+
       </div>
     </section>
+
   </main>
 
   <script>
     (function () {
-      var CORRECT_DATE = "2023-09-15";
+      lucide.createIcons();
 
+      var CORRECT_DATE = "2023-09-15";
+      
       var accessScreen = document.getElementById("access-screen");
       var adventureScreen = document.getElementById("adventure-screen");
       var revealScreen = document.getElementById("reveal-screen");
-
-      var form = document.getElementById("date-form");
+      
       var dateInput = document.getElementById("our-date");
-      var dateMessage = document.getElementById("date-message");
-      var continueButton = document.getElementById("continue-button");
-      var revealButton = document.getElementById("reveal-button");
-      var snowLayer = document.getElementById("snow-layer");
+      var dateFeedback = document.getElementById("date-feedback");
+      var btnValidate = document.getElementById("btn-validate-date");
+      var btnHint = document.getElementById("btn-hint");
+      var hintContent = document.getElementById("hint-content");
+      var btnReveal = document.getElementById("btn-reveal");
+      var photoInput = document.getElementById("photo-input");
+      var polaroidPreview = document.getElementById("polaroid-preview");
+      var btnMusic = document.getElementById("btn-music");
+      var musicTextState = document.getElementById("music-text-state");
 
-      function setMessage(text, isSuccess) {
-        dateMessage.textContent = text;
-        dateMessage.className = isSuccess ? "message success" : "message";
+      function goToScreen(current, next) {
+        current.style.opacity = "0";
+        current.style.transform = "translateY(-15px) scale(0.98)";
+        setTimeout(function () {
+          current.classList.remove("active");
+          current.classList.add("is-hidden");
+          
+          next.classList.remove("is-hidden");
+          next.classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          lucide.createIcons();
+        }, 350);
       }
 
-      function switchScreen(currentScreen, nextScreen) {
-        currentScreen.classList.add("fade-out");
+      function handleDateValidation() {
+        var val = dateInput.value;
+        dateInput.classList.remove("has-error");
 
-        window.setTimeout(function () {
-          currentScreen.classList.add("is-hidden");
-          currentScreen.classList.remove("fade-out");
-
-          nextScreen.classList.remove("is-hidden");
-          nextScreen.style.opacity = "0";
-          nextScreen.style.transform = "translateY(12px) scale(0.98)";
-
-          window.setTimeout(function () {
-            nextScreen.style.opacity = "1";
-            nextScreen.style.transform = "translateY(0) scale(1)";
-          }, 20);
-        }, 300);
-      }
-
-      function checkDate() {
-        var value = dateInput.value;
-
-        dateInput.classList.remove("input-error");
-
-        if (!value) {
-          setMessage(
-            "Introduce nuestra fecha especial para continuar. 💖",
-            false
-          );
-          dateInput.classList.add("input-error");
-          dateInput.focus();
+        if (!val) {
+          dateFeedback.textContent = "Introduce una fecha para continuar 💖";
+          dateFeedback.className = "feedback-msg";
+          dateInput.classList.add("has-error");
           return;
         }
 
-        if (value !== CORRECT_DATE) {
-          setMessage(
-            "Esa no es… piensa un poquito más. 💖",
-            false
-          );
-          dateInput.classList.add("input-error");
-          dateInput.focus();
+        if (val !== CORRECT_DATE) {
+          dateFeedback.textContent = "Esa no es… piensa un poquito más 💖";
+          dateFeedback.className = "feedback-msg";
+          dateInput.classList.add("has-error");
           return;
         }
 
-        setMessage(
-          "¡Exacto! Has desbloqueado la sorpresa. ✨",
-          true
-        );
+        dateFeedback.textContent = "¡Exacto! Has desbloqueado la sorpresa 🩵";
+        dateFeedback.className = "feedback-msg is-success";
 
-        window.setTimeout(function () {
-          switchScreen(accessScreen, adventureScreen);
-        }, 250);
+        if (typeof confetti === "function") {
+          confetti({
+            particleCount: 50,
+            spread: 60,
+            origin: { y: 0.7 },
+            colors: ['#d4af37', '#ffffff', '#e63946']
+          });
+        }
+
+        setTimeout(function () {
+          goToScreen(accessScreen, adventureScreen);
+        }, 500);
       }
 
-      continueButton.addEventListener("click", checkDate);
+      btnValidate.addEventListener("click", handleDateValidation);
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        checkDate();
+      btnHint.addEventListener("click", function() {
+        hintContent.style.display = hintContent.style.display === "block" ? "none" : "block";
       });
 
-      dateInput.addEventListener("change", function () {
-        dateInput.classList.remove("input-error");
-        setMessage("", false);
-      });
+      btnReveal.addEventListener("click", function () {
+        goToScreen(adventureScreen, revealScreen);
+        
+        setTimeout(function() {
+          if (typeof confetti === "function") {
+            var end = Date.now() + (3 * 1000);
+            var colors = ['#d4af37', '#ffffff', '#ff4757', '#38ef7d'];
 
-      revealButton.addEventListener("click", function () {
-        switchScreen(adventureScreen, revealScreen);
-      });
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+              });
 
-      function createSnowflake() {
-        var flake = document.createElement("span");
-        var symbols = ["❄", "❅", "·"];
-
-        flake.className = "snowflake";
-        flake.textContent =
-          symbols[Math.floor(Math.random() * symbols.length)];
-
-        flake.style.left = Math.random() * 100 + "vw";
-        flake.style.fontSize = 8 + Math.random() * 16 + "px";
-        flake.style.opacity = 0.3 + Math.random() * 0.65;
-        flake.style.animationDuration = 5 + Math.random() * 6 + "s";
-
-        snowLayer.appendChild(flake);
-
-        window.setTimeout(function () {
-          if (flake.parentNode) {
-            flake.parentNode.removeChild(flake);
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
           }
-        }, 12000);
-      }
+        }, 400);
+      });
 
-      for (var i = 0; i < 18; i += 1) {
-        window.setTimeout(createSnowflake, i * 140);
-      }
+      photoInput.addEventListener("change", function(e) {
+        var file = e.target.files[0];
+        if (file) {
+          var reader = new FileReader();
+          reader.onload = function(event) {
+            polaroidPreview.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
 
-      window.setInterval(createSnowflake, 390);
+      function updateCountdown() {
+        var targetDate = new Date("2026-12-06T09:00:00").getTime();
+        var now = new Date().getTime();
+        var diff = targetDate - now;
+
+        if (diff > 0) {
+          var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById("cd-days").textContent = String(days).padStart(2, '0');
+          document.getElementById("cd-hours").textContent = String(hours).padStart(2, '0');
+          document.getElementById("cd-minutes").textContent = String(minutes).padStart(2, '0');
+          document.getElementById("cd-seconds").textContent = String(seconds).padStart(2, '0');
+        }
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      var isPlaying = true;
+      btnMusic.addEventListener("click", function() {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          musicTextState.textContent = "Pausar la canción";
+        } else {
+          musicTextState.textContent = "Reanudar la canción";
+        }
+      });
+
     })();
   </script>
 </body>
