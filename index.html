@@ -240,15 +240,43 @@
       });
 
       btnReveal.addEventListener("click", function () {
+        audioSong.play()
+          .then(function () {
+            musicTextState.textContent = "Pausar la canción";
+            musicIconState.setAttribute("data-lucide", "pause");
+            lucide.createIcons();
+          })
+          .catch(function (error) {
+            console.error("No se pudo reproducir la canción:", error);
+          });
+      
         goToScreen(adventureScreen, revealScreen);
+      
         setTimeout(function () {
           if (typeof confetti === "function") {
             var end = Date.now() + (3 * 1000);
-            var colors = ['#d4af37', '#ffffff', '#ff4757', '#38ef7d'];
+            var colors = ["#d4af37", "#ffffff", "#ff4757", "#38ef7d"];
+      
             (function frame() {
-              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
-              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
-              if (Date.now() < end) requestAnimationFrame(frame);
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+              });
+      
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+              });
+      
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
             }());
           }
         }, 400);
